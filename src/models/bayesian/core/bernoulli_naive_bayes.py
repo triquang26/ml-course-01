@@ -72,7 +72,7 @@ def run_bernoulli_naive_bayes(train_dataset, test_dataset):
     print("\nClassification Report:")
     print(cr)
     
-    return accuracy, y_pred, y_test
+    return accuracy, y_pred, y_test,bnb
 
 def visualize_results(predictions, actual_labels, save_path=None):
     """

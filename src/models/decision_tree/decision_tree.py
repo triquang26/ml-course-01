@@ -39,7 +39,7 @@ def run_decision_tree_model(X_train, y_train, X_val, y_val, X_test, y_test, max_
     print(f"F1-score on Test Set: {f1:.4f}")
     print(f"Macro F1-score on Test Set: {f1_macro:.4f}")
     
-    return test_accuracy, y_test_pred, y_test
+    return test_accuracy, y_test_pred, y_test,dt_model
 
 def visualize_results(predictions, actual_labels, save_path=None):
     """
