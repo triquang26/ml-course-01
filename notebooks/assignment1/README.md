@@ -10,7 +10,7 @@ This project implements and compares the following machine learning models:
 - **Decision Trees**
 - **Neural Networks** (Vision Transformer)
 - **Graphical Models** (Bayesian Networks, Augmented Naive Bayes, Hidden Markov Models)
-- **Genetic Algorithm-based Ensemble Model** (Convolutioal Neural Network, Decision Tree, Naive Bayes)
+- **Genetic Algorithm-based Ensemble Model**
 
 All models are trained and evaluated on the **PneumoniaMNIST** dataset, a binary classification task to identify pneumonia in pediatric chest X-rays.
 
