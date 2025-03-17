@@ -5,59 +5,44 @@ import matplotlib.pyplot as plt
 import numpy as np
 import torch
 from torchvision import transforms
-
+import os
+import sys
+import time
+from typing import Dict, Tuple, List
+import numpy as np
 # Import the Vision Transformer implementation
 from neural_network import (
     run_vision_transformer, 
-    visualize_results, 
+    # visualize_results, 
     compute_mean_std, 
     plot_confusion_matrix,
     plot_f1_heatmap
 )
-
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
+from src.data.preprocess.neural_network import *
+from src.features.features_selection.neural_network import *
+from src.visualization.visualize import (
+    visualize_results,
+    compare_models,
+    VISUALIZATION_DIR
+)
+MODEL_DIR = "trained"
 # Define visualization directory
 VISUALIZATION_DIR = "reports/figures"
-
-def load_data():
-    """Load and preprocess the PneumoniaMNIST dataset"""
-    print("Loading PneumoniaMNIST dataset...")
-    
-    # Load dataset information
-    dataset_info = INFO["pneumoniamnist"]
-    print(f"Dataset description: {dataset_info['description']}")
-    print(f"Number of classes: {len(dataset_info['label'])}, Labels: {dataset_info['label']}")
-    
-    # First load the raw dataset to compute mean and std
-    raw_train_dataset = PneumoniaMNIST(split='train', download=True, transform=transforms.ToTensor())
-    mean, std = compute_mean_std(raw_train_dataset)
-    print(f"Dataset statistics - Mean: {mean:.4f}, Std: {std:.4f}")
-    
-    # Create transform with normalization
-    transform = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[mean], std=[std])
-    ])
-    
-    # Load training and test sets with proper transform
-    train_dataset = PneumoniaMNIST(split='train', download=True, transform=transform)
-    test_dataset = PneumoniaMNIST(split='test', download=True, transform=transform)
-    
-    print("Dataset loaded successfully.")
-    print(f"Training samples: {len(train_dataset)}")
-    print(f"Test samples: {len(test_dataset)}")
-    
-    return train_dataset, test_dataset
+def count_parameters(model):
+    return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
 def ensure_dir_exists(directory):
     """Create directory if it doesn't exist"""
     if not os.path.exists(directory):
         os.makedirs(directory)
         print(f"Created directory: {directory}")
-
+    
 def main():
     """Main function to run Vision Transformer model"""
     # Create visualization directory if it doesn't exist
     ensure_dir_exists(VISUALIZATION_DIR)
+    ensure_dir_exists(MODEL_DIR)
     timestamp = time.strftime("%Y%m%d-%H%M%S")
     
     # Load data
@@ -67,7 +52,7 @@ def main():
     results = {}
     
     # Set training parameters
-    n_epochs = 1
+    n_epochs = 10
     batch_size = 100
     learning_rate = 0.003
     
@@ -96,26 +81,26 @@ def main():
     visualize_results(
         vit_predictions,
         vit_actual_labels,
+        "ViT",
         save_path=os.path.join(VISUALIZATION_DIR, f"{timestamp}_vision_transformer_cm.png")
     )
     
     # Generate additional visualizations
     plot_confusion_matrix(
-        vit_model,
-        torch.utils.data.DataLoader(test_dataset, batch_size=1000),
-        save_path=os.path.join(VISUALIZATION_DIR, f"{timestamp}_vision_transformer_detailed_cm.png")
+    vit_predictions,
+    vit_actual_labels,
+    save_path=os.path.join(VISUALIZATION_DIR, f"{timestamp}_test_vision_transformer_detailed_cm.png")
     )
-    
     plot_f1_heatmap(
-        vit_model,
-        torch.utils.data.DataLoader(test_dataset, batch_size=1000),
-        save_path=os.path.join(VISUALIZATION_DIR, f"{timestamp}_vision_transformer_f1_heatmap.png")
+    vit_predictions,
+    vit_actual_labels,
+    save_path=os.path.join(VISUALIZATION_DIR, f"{timestamp}_test_vision_transformer_f1_heatmap.png")
     )
     
-    # Store result
+
     results['Vision Transformer'] = vit_accuracy
     
-    # Display results
+    # # Display results
     print("\n" + "="*80)
     print("MODEL RESULTS")
     print("="*80)

@@ -89,16 +89,15 @@ def test_models():
                 model_name=model_name,
                 save_path=os.path.join(VISUALIZATION_DIR, f"test_{model_name}_results.png")
             )
-            
-            # Plot confusion matrix
-            cm = confusion_matrix(y_test, y_pred)
-            plt.figure(figsize=(8, 6))
-            sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
-            plt.title(f'Confusion Matrix - {model_name}')
-            plt.ylabel('True Label')
-            plt.xlabel('Predicted Label')
-            plt.savefig(os.path.join(VISUALIZATION_DIR, f"test_{model_name}_confusion_matrix.png"))
-            plt.close()
+        
+            # cm = confusion_matrix(y_test, y_pred)
+            # plt.figure(figsize=(8, 6))
+            # sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+            # plt.title(f'Confusion Matrix - {model_name}')
+            # plt.ylabel('True Label')
+            # plt.xlabel('Predicted Label')
+            # plt.savefig(os.path.join(VISUALIZATION_DIR, f"test_{model_name}_confusion_matrix.png"))
+            # plt.close()
             
         except Exception as e:
             print(f"Error testing {model_name}: {str(e)}")
