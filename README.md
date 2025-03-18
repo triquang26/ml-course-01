@@ -1,6 +1,19 @@
-# Machine Learning Models: Implementation and Comparison
+# MACHINE LEARNING ASSIGNMENT 1
 
-This repository contains implementations and comparative analyses of various machine learning models, focusing on pneumonia classification using the MedMNIST dataset. Each implementation demonstrates different approaches to the same problem, allowing for direct comparison of model characteristics, strengths, and limitations.
+## Ho Chi Minh City University of Technology
+### Faculty of Computer Science and Engineering
+### Instructor: Nguyễn An Khương
+## Team Members:
+| **Name**              | **Student ID** | **Email**                                                      | **Role**              |
+|-----------------------|----------------|----------------------------------------------------------------|-----------------------|
+| **Phạm Trí Quang**    | 2352976        | [quang.phamtri@hcmut.edu.vn](mailto:quang.phamtri@hcmut.edu.vn) | Graphical Model       |
+| **Nguyễn Thiện Anh**  | 2352053        | [anh.nguyencse2350253@hcmut.edu.vn](mailto:anh.nguyencse2350253@hcmut.edu.vn) | Genetic Algorithm     |
+| **Lê Nhân Văn**       | 2252899        | [van.lenhanvan369@hcmut.edu.vn](mailto:van.lenhanvan369@hcmut.edu.vn) | Decision Tree         |
+| **Nguyễn Anh Kiệt**   | 2252403        | [kiet.nguyenanh@hcmut.edu.vn](mailto:kiet.nguyenanh@hcmut.edu.vn) | Bayesian Models       |
+| **Nguyễn Hữu Cường** | 2252098        | [cuong.nguyen1nos1mp4@hcmut.edu.vn](mailto:cuong.nguyen1nos1mp4@hcmut.edu.vn) | Neural Network        |
+
+## Repository Link
+You can access the repository [here](https://github.com/triquang26/ml-course-01).
 
 ## Project Overview
 
@@ -13,6 +26,11 @@ This project implements and compares the following machine learning models:
 - **Genetic Algorithm-based Ensemble Model** (Convolutional Neural Network, Decision Tree, Naive Bayes)
 
 All models are trained and evaluated on the **PneumoniaMNIST** dataset, a binary classification task to identify pneumonia in pediatric chest X-rays.
+
+I'll create an updated Repository Structure in markdown format that includes the Genetic Algorithm (GA) section. Let me first analyze the current structure to make sure I understand the existing organization correctly.
+
+Read file: README.md
+Looking at the current repository structure, I notice you'd like to update it to better reflect the Genetic Algorithm (GA) section. Here's the updated repository structure in markdown format:
 
 ## Repository Structure
 
@@ -63,8 +81,15 @@ All models are trained and evaluated on the **PneumoniaMNIST** dataset, a binary
 │   │   │   ├── main.py
 │   │   │   └── README.md
 │   │   ├── genetic_algorithm/  # Genetic Algorithm ensemble
-│   │   │   ├── main.py
-│   │   │   └── genetic_algorithm.py
+│   │   │   ├── core/         # Core GA implementation
+│   │   │   ├── figures/      # GA evolution and performance visualizations
+│   │   │   ├── trained/      # Trained ensemble models and weights
+│   │   │   ├── main.py       # Training entry point
+│   │   │   ├── genetic_algorithm.py  # GA implementation
+│   │   │   ├── ensemble.py   # Model ensemble integration
+│   │   │   ├── test.py       # Evaluation script
+│   │   │   ├── predict.py    # Prediction script
+│   │   │   └── README.md     # GA-specific documentation
 │   │   ├── graphical_model/  # Graphical model implementations
 │   │   │   ├── core/
 │   │   │   ├── figures/
@@ -85,11 +110,21 @@ All models are trained and evaluated on the **PneumoniaMNIST** dataset, a binary
 │   └── raw/                  # Original, immutable data
 ├── models/                   # High-level model storage
 │   ├── experiments/          # Experimental configurations
+│   ├── genetic_algorithm/    # GA experimental results
+│   │   ├── evolution/        # Evolution progress tracking
+│   │   ├── configurations/   # Different GA parameter configurations
+│   │   └── ensemble_weights/ # Optimized ensemble weights
 │   └── trained/              # Top-level trained model files
 ├── reports/                  # Generated analysis reports
 │   ├── figures/              # Generated graphics and figures
+│   ├── genetic_algorithm/    # GA-specific reports and analysis
+│   │   ├── evolution_analysis.md  # Analysis of GA evolution process
+│   │   ├── ensemble_performance.md  # Ensemble performance analysis
+│   │   └── figures/          # GA-specific visualizations
 │   └── final_project/        # Final project reports
 ├── tests/                    # Test files
+│   ├── test_genetic_algorithm.py  # GA-specific tests
+│   └── test_ensemble.py      # Ensemble model tests  
 ├── README.md                 # Project description
 └── requirements.txt          # Package dependencies
 ```
@@ -128,31 +163,26 @@ Each model is structured consistently across the repository:
 ### 1. Bayesian Models
 - **Implementation**: Gaussian, Multinomial, and Bernoulli Naive Bayes classifiers
 - **Key Features**: Probabilistic approach with different distribution assumptions
-- **Performance**: Gaussian NB achieved best results (83.3% accuracy)
 - **Strengths**: Simple, fast, and interpretable
 
 ### 2. Decision Trees
 - **Implementation**: Standard decision tree with optimized depth
 - **Key Features**: Hierarchical decision rules
-- **Performance**: 80.1% accuracy on test set
 - **Strengths**: Interpretability and feature importance ranking
 
 ### 3. Neural Networks
 - **Implementation**: Vision Transformer model
 - **Key Features**: Attention-based architecture for image processing
-- **Performance**: 87.9% accuracy on test set
 - **Strengths**: Strong feature extraction capabilities for complex patterns
 
 ### 4. Graphical Models
 - **Implementation**: Bayesian Networks, Augmented Naive Bayes, Hidden Markov Models
 - **Key Features**: Structured probabilistic relationships
-- **Performance**: Augmented Naive Bayes achieved 85% accuracy
 - **Strengths**: Captures complex conditional dependencies
 
 ### 5. Genetic Algorithm Ensemble
 - **Implementation**: Weighted ensemble combining Decision Tree, CNN, and Naive Bayes
 - **Key Features**: Optimization of model weights using genetic algorithm
-- **Performance**: Improved accuracy over individual models
 - **Strengths**: Automated model combination optimization
 
 ## Dataset
@@ -177,11 +207,11 @@ Ensure you have the following installed:
 - pgmpy (for graphical models)
 - numpy, pandas
 - matplotlib, seaborn
-
+- optuna
 ### Installation
 Clone the repository:
 ```bash
-git clone https://github.com/yourusername/ml-course-01.git
+git clone https://github.com/triquang26/ml-course-01
 cd ml-course-01
 ```
 Install required packages:

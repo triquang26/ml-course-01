@@ -62,7 +62,7 @@ python src/models/graphical_model/test.py
 - Confusion matrices with color-coded intensities
 - Performance comparison plots across models
 - Training/validation curves for convergence analysis
-
+![Graphical Model Result](../../../figures/20250318-174939_model_comparison.png)
 ### Model Performance
 | Model                  | Accuracy | F1-Score | Training Time |
 |------------------------|----------|----------|---------------|
