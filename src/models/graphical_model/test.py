@@ -4,6 +4,7 @@ import numpy as np
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 import seaborn as sns
 import matplotlib.pyplot as plt
+import logging
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
 
@@ -19,6 +20,7 @@ from src.features.features_selection.graphical_model import (
 )
 from src.models.graphical_model.predict import ModelPredictor
 from src.visualization.visualize import visualize_results, VISUALIZATION_DIR
+from src.models.graphical_model.persistence import ModelPersistence
 
 def preprocess_data(test_dataset):
     """Preprocess test data using project pipeline"""
@@ -30,22 +32,15 @@ def preprocess_data(test_dataset):
     X_test = X_test.reshape(X_test.shape[0], -1)  # Flatten images
     X_test = X_test.astype('float32') / 255.0  # Normalize
     
-    # Add PCA dimensionality reduction to match model's feature count
-    from sklearn.decomposition import PCA
-    pca = PCA(n_components=50)  # Model expects 50 components
-    X_test_reduced = pca.fit_transform(X_test)
-    
-    # Add discretization to match model's expected input format
-    from sklearn.preprocessing import KBinsDiscretizer
-    discretizer = KBinsDiscretizer(n_bins=10, encode='ordinal', strategy='quantile')
-    X_test_discrete = discretizer.fit_transform(X_test_reduced)
-    
-    return X_test_discrete, y_test
+    # Return raw normalized data without PCA or discretization
+    # Let each model apply its own preprocessing
+    return X_test, y_test
+
 def test_models():
     # Load test dataset
     _, test_dataset = load_data()
     
-    # Get raw test data
+    # Get preprocessed test data
     X_test, y_test = preprocess_data(test_dataset)
     
     # Initialize predictor with preprocessing components
@@ -54,8 +49,8 @@ def test_models():
     # Models to test
     model_names = [
         'bayesian_network',
-        # 'augmented_naive_bayes',
-        # 'hidden_markov_model'
+        'augmented_naive_bayes',
+        'hidden_markov_model'
     ]
     
     results = {}
@@ -115,6 +110,49 @@ def test_models():
         print(f"  Recall:    {metrics['recall']:.4f}")
         print(f"  F1-Score:  {metrics['f1_score']:.4f}")
         print("-" * 40)
+
+def test_hmm_model(test_data, model_name="hidden_markov_model"):
+    """Test the Hidden Markov Model"""
+    
+    try:
+        # Load model and preprocessors
+        model = persistence.load_model(model_name)
+        preprocessors = persistence.load_preprocessors(model_name)
+        
+        # Special handling for HMM model
+        if not isinstance(model, dict):
+            logging.info("Converting single HMM model to class dictionary")
+            # Try to convert to proper format
+            if hasattr(model, 'startprob_'):
+                model = {1: model}  # Assume it's for pneumonia class
+            else:
+                logging.error(f"Error loading {model_name}: Invalid model format")
+                print(f"Could not load {model_name} model. Skipping...")
+                return None
+        
+        # Verify models have proper shape
+        for c, hmm in model.items():
+            if hasattr(hmm, 'covars_') and hmm.covariance_type == 'diag':
+                n_states = hmm.n_components
+                
+                # Get expected feature dimension
+                n_features = 50  # Default
+                if preprocessors.get('params') and 'n_components' in preprocessors['params']:
+                    n_features = preprocessors['params']['n_components']
+                
+                # Fix covariance matrix shape if needed
+                if hmm.covars_.shape != (n_states, n_features):
+                    logging.warning(f"Fixing covariance shape for class {c}")
+                    if len(hmm.covars_.shape) == 1:
+                        hmm.covars_ = np.tile(hmm.covars_[:, np.newaxis], (1, n_features))
+        
+        # Process data and make predictions
+        # ...rest of testing code...
+    
+    except Exception as e:
+        logging.error(f"Error testing {model_name}: {str(e)}")
+        print(f"Could not load {model_name} model. Skipping...")
+        return None
 
 if __name__ == "__main__":
     test_models()

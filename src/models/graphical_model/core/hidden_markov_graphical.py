@@ -22,6 +22,8 @@ def run_hidden_markov_model(train_dataset, test_dataset, n_components=50, n_bins
         accuracy: Model accuracy on test set
         predictions: Model predictions on test set
         actual_labels: True labels for test set
+        model_dict: Dictionary of trained models
+        preprocessors: Dictionary of preprocessors used
     """
     # Data preparation
     print("Preparing data for Hidden Markov Model...")
@@ -168,7 +170,20 @@ def run_hidden_markov_model(train_dataset, test_dataset, n_components=50, n_bins
     accuracy = accuracy_score(actual_labels, predictions)
     print(f"\nAccuracy on test data: {accuracy:.4f}")
     
-    return accuracy, predictions, actual_labels, model
+    # Package all relevant data for persistence
+    preprocessors = {
+        'pca': pca,
+        'discretizer': discretizer,
+        'params': {
+            'n_components': n_components,
+            'n_bins': n_bins,
+            'n_hidden_states': n_hidden_states
+        }
+    }
+    
+    # Instead of returning a single model, return the dictionary of models
+    # This will help with proper serialization and loading
+    return accuracy, predictions, actual_labels, models, preprocessors
 
 def visualize_results(predictions, actual_labels, save_path=None):
     """Visualize the performance of the Hidden Markov Model with confusion matrix and classification report

@@ -103,27 +103,38 @@ class ModelRunner:
             best_params = self.tune_model(model_name, train_dataset)
             kwargs.update(best_params)
         
+        # Đảm bảo tham số được truyền đúng
         base_params = {
             'train_dataset': train_dataset,
             'test_dataset': test_dataset,
         }
         
-        if 'n_components' not in kwargs:
-            base_params['n_components'] = self.params.n_components
-        if 'n_bins' not in kwargs:
-            base_params['n_bins'] = self.params.n_bins
+        # Thêm tham số mặc định từ self.params
+        for param in ['n_components', 'n_bins', 'n_hidden_states', 'correlation_threshold']:
+            if hasattr(self.params, param) and param not in kwargs:
+                base_params[param] = getattr(self.params, param)
         
-        print("\n" + "="*80)
-        print(f"Running {model_name}...")
-        print("="*80)
-        
+        print(f"\nChạy {model_name} với tham số:")
         all_params = {**base_params, **kwargs}
+        for key, value in all_params.items():
+            if key not in ['train_dataset', 'test_dataset']:
+                print(f"  {key}: {value}")
         
-        # Run model and get results
-        accuracy, predictions, actual_labels, model = model_func(**all_params)
+        # Chạy mô hình và lấy kết quả
+        model_result = model_func(**all_params)
+        
+        # Check if the model function returns preprocessors or not
+        if len(model_result) >= 5:  # Updated this check 
+            accuracy, predictions, actual_labels, model, preprocessors = model_result
+        else:
+            accuracy, predictions, actual_labels, model = model_result
+            preprocessors = None  # Set preprocessors to None if not returned
+        
         # Save model if enabled
         if self.params.save_models:
-            self.persistence.save_model(model, model_name)
+            # Clean model name for persistence
+            clean_model_name = model_name.lower().replace(' ', '_')
+            self.persistence.save_model(model, clean_model_name, preprocessors)
         
         # Visualize and save results
         metrics = visualize_results(

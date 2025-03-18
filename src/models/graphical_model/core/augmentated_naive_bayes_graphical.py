@@ -26,6 +26,8 @@ def run_augmented_naive_bayes(train_dataset, test_dataset, n_components=50, n_bi
         accuracy: Model accuracy on test set
         predictions: Model predictions on test set
         actual_labels: True labels for test set
+        model: Trained BayesianNetwork model
+        preprocessors: Dictionary of preprocessors used for the model
     """
     # Data preparation
     print("Preparing data for Augmented Naive Bayes model...")
@@ -165,7 +167,18 @@ def run_augmented_naive_bayes(train_dataset, test_dataset, n_components=50, n_bi
     accuracy = accuracy_score(actual_labels, predictions)
     print(f"\nAccuracy on test data: {accuracy:.4f}")
     
-    return accuracy, predictions, actual_labels, model
+    # Return results (add preprocessors to match other functions)
+    preprocessors = {
+        'pca': pca,
+        'discretizer': discretizer,
+        'params': {
+            'n_components': n_components,
+            'n_bins': n_bins,
+            'correlation_threshold': correlation_threshold
+        }
+    }
+    
+    return accuracy, predictions, actual_labels, model, preprocessors
 
 def visualize_results(predictions, actual_labels, save_path=None):
     """Visualize the performance of the Augmented Naive Bayes with confusion matrix and classification report

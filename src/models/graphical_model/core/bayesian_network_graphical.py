@@ -24,6 +24,8 @@ def run_bayesian_network(train_dataset, test_dataset, n_components=50, n_bins=10
         accuracy: Model accuracy on test set
         predictions: Model predictions on test set
         actual_labels: True labels for test set
+        model: Trained Bayesian Network model
+        preprocessors: Dictionary containing preprocessors used
     """
     # Data preparation
     print("Preparing data for Bayesian Network model...")
@@ -151,7 +153,14 @@ def run_bayesian_network(train_dataset, test_dataset, n_components=50, n_bins=10
     accuracy = accuracy_score(actual_labels, predictions)
     print(f"\nAccuracy on test data: {accuracy:.4f}")
     
-    return accuracy, predictions, actual_labels, model
+    # Trả về thêm các preprocessors
+    preprocessors = {
+        'pca': pca,
+        'discretizer': discretizer,
+        'params': {'n_components': n_components, 'n_bins': n_bins}
+    }
+    
+    return accuracy, predictions, actual_labels, model, preprocessors
 
 def visualize_results(predictions, actual_labels, save_path=None, title="Bayesian Network"):
     """Visualize the performance of the model with confusion matrix and classification report

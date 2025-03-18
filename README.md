@@ -10,42 +10,118 @@ This project implements and compares the following machine learning models:
 - **Decision Trees**
 - **Neural Networks** (Vision Transformer)
 - **Graphical Models** (Bayesian Networks, Augmented Naive Bayes, Hidden Markov Models)
-- **Genetic Algorithm-based Ensemble Model** (Convolutioal Neural Network, Decision Tree, Naive Bayes)
+- **Genetic Algorithm-based Ensemble Model** (Convolutional Neural Network, Decision Tree, Naive Bayes)
 
 All models are trained and evaluated on the **PneumoniaMNIST** dataset, a binary classification task to identify pneumonia in pediatric chest X-rays.
 
 ## Repository Structure
+
 ```
-├── data/                   # Dataset storage
-│   ├── external/           # Data from third-party sources
-│   ├── processed/          # Cleaned and transformed data
-│   └── raw/                # Original, immutable data
-├── models/                 # Saved model files
-│   ├── experiments/        # Experimental configurations
-│   └── trained/            # Trained model files
-│     └── augmentated_naive_bayes_graphical/
-├── notebooks/              # Jupyter notebooks
-│   ├── assignment1/        # Analysis notebooks
-│   │   └── model/          # Model implementation notebooks
-│   ├── assignment2/
-│   └── final_project/
-├── reports/                # Generated analysis reports
-│   ├── figures/            # Generated graphics and figures
-│   └── final_project/      # Final project reports
-├── src/                    # Source code
-│   ├── data/               # Scripts to download or generate data
-│   ├── features/           # Feature engineering scripts
-│   ├── models/             # Model implementations
-│   │   ├── bayesian/       # Naive Bayes implementations
-│   │   ├── decision_tree/  # Decision Tree implementations
-│   │   ├── genetic_algorithm/ # Genetic Algorithm ensemble
-│   │   ├── graphical_model/ # Graphical model implementations
-│   │   └── neural_network/ # Neural network implementations
-│   └── visualization/      # Visualization tools
-├── tests/                  # Test files
-├── README.md               # Project description
-└── requirements.txt        # Package dependencies
+├── notebooks/                # Jupyter notebooks for analysis and model development
+│   ├── assignment1/          # Main assignment notebooks
+│   │   ├── model/            # Individual model implementation notebooks
+│   │   │   ├── bayesian_models.ipynb
+│   │   │   ├── decision_tree.ipynb
+│   │   │   ├── genetic_algorithm.ipynb
+│   │   │   ├── graphical_model.ipynb
+│   │   │   └── neural_network.ipynb
+│   │   ├── exploration.ipynb  # Dataset exploration
+│   │   ├── submission.ipynb   # Final submission notebook
+│   │   └── README.md          # Assignment-specific documentation
+│   ├── assignment2/          # Future assignment work
+│   └── final_project/        # Final project notebooks
+├── src/                      # Source code (core implementation)
+│   ├── data/                 # Data processing scripts
+│   │   ├── preprocess/       # Model-specific preprocessing
+│   │   │   ├── bayesian.py
+│   │   │   ├── decision_tree.py
+│   │   │   ├── genetic_algorithm.py
+│   │   │   ├── graphical_model.py
+│   │   │   └── neural_network.py
+│   │   ├── make_dataset.py
+│   │   └── preprocess.py
+│   ├── features/             # Feature engineering scripts
+│   │   ├── features_selection/  # Model-specific feature selection
+│   │   │   ├── bayesian.py
+│   │   │   ├── decision_tree.py
+│   │   │   ├── genetic_algorithm.py
+│   │   │   ├── graphical_model.py
+│   │   │   └── neural_network.py
+│   │   └── build_features.py
+│   ├── models/               # Model implementations
+│   │   ├── bayesian/         # Naive Bayes implementations
+│   │   │   ├── core/         # Core implementations
+│   │   │   ├── figures/      # Generated visualizations
+│   │   │   ├── trained/      # Trained model files
+│   │   │   ├── main.py       # Training entry point
+│   │   │   ├── test.py       # Evaluation script
+│   │   │   ├── predict.py    # Prediction script
+│   │   │   └── README.md     # Model-specific documentation
+│   │   ├── decision_tree/    # Decision Tree implementations
+│   │   │   ├── figures/
+│   │   │   ├── trained/
+│   │   │   ├── main.py
+│   │   │   └── README.md
+│   │   ├── genetic_algorithm/  # Genetic Algorithm ensemble
+│   │   │   ├── main.py
+│   │   │   └── genetic_algorithm.py
+│   │   ├── graphical_model/  # Graphical model implementations
+│   │   │   ├── core/
+│   │   │   ├── figures/
+│   │   │   ├── trained/
+│   │   │   ├── main.py
+│   │   │   └── README.md
+│   │   ├── neural_network/   # Neural network implementations
+│   │   │   ├── reports/figures/
+│   │   │   ├── trained/
+│   │   │   ├── main.py
+│   │   │   └── README.md
+│   │   ├── train_model.py    # Main training script
+│   │   └── predict_model.py  # Main prediction script
+│   └── visualization/        # Visualization tools
+├── data/                     # Dataset storage
+│   ├── external/             # Data from third-party sources
+│   ├── processed/            # Cleaned and transformed data
+│   └── raw/                  # Original, immutable data
+├── models/                   # High-level model storage
+│   ├── experiments/          # Experimental configurations
+│   └── trained/              # Top-level trained model files
+├── reports/                  # Generated analysis reports
+│   ├── figures/              # Generated graphics and figures
+│   └── final_project/        # Final project reports
+├── tests/                    # Test files
+├── README.md                 # Project description
+└── requirements.txt          # Package dependencies
 ```
+
+## Model Organization
+
+Each model is structured consistently across the repository:
+
+1. **Notebook Implementation**
+   - Located in `notebooks/assignment1/model/` 
+   - Contains exploratory implementation, experiments, and visualizations
+   - Serves as a tutorial and explanation of the model approach
+
+2. **Source Code Implementation**
+   - Located in `src/models/{model_type}/`
+   - Contains modular, production-ready implementation
+   - Includes separate files for:
+     - Core model logic
+     - Training entry points
+     - Testing/evaluation
+     - Model persistence
+   
+3. **Documentation**
+   - Each model has a dedicated README.md explaining:
+     - Implementation details
+     - Unique aspects of the approach
+     - Performance characteristics
+     - Usage instructions
+
+4. **Artifacts**
+   - Trained models stored in `src/models/{model_type}/trained/`
+   - Visualizations stored in `src/models/{model_type}/figures/` or reports directories
 
 ## Models Implemented
 
@@ -87,17 +163,7 @@ The **PneumoniaMNIST** dataset consists of **5,856** pediatric chest X-ray image
 - **Testing**: 624 images
 
 ## Performance Comparison
-
-| Model                     | Accuracy | F1-Score | Key Characteristics |
-|---------------------------|----------|----------|----------------------|
-| Gaussian NB              | 83.3%    | 0.87     | Fast training, probabilistic output |
-| Bernoulli NB             | 80.1%    | 0.84     | Binary feature handling |
-| Multinomial NB           | 82.7%    | 0.86     | Good with discrete features |
-| Decision Tree            | 80.1%    | 0.85     | Interpretable rules |
-| Vision Transformer       | 87.9%    | 0.90     | Complex pattern recognition |
-| Augmented Naive Bayes    | 85.0%    | 0.89     | Structured probabilistic model |
-| Hidden Markov Model      | 72.0%    | 0.71     | Sequential data modeling |
-| Genetic Algorithm Ensemble | 88.5%  | 0.91     | Optimized model combination |
+![Model Performance Comparison](/figures/model-comparison.png)
 
 ## Getting Started
 
@@ -153,4 +219,3 @@ Each model implementation includes detailed analysis in both code comments and n
 
 - **PneumoniaMNIST dataset** from the MedMNIST collection
 - **Inspiration** from various machine learning courses and textbooks
-
