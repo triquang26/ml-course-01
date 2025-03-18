@@ -2,6 +2,7 @@ import os
 import time
 import numpy as np
 import torch
+from core import cnn_model, decision_tree_model, bayesian_model
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import TensorDataset, DataLoader
@@ -13,143 +14,31 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score, f1_score, confusion_matrix
 import matplotlib.pyplot as plt
 import seaborn as sns
-
-# Import genetic algorithm
+import sys
+from persistance import ModelPersistence
 from genetic_algorithm import GeneticAlgorithm
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
+
+from src.data.preprocess.genetic_algorithm import (
+    load_data,
+    numpy_to_tensor
+)
+
+from src.models.genetic_algorithm.model_tuning import (
+    train_cnn,
+    train_decision_tree,
+    train_naive_bayes
+)
 
 # Define visualization directory
 VISUALIZATION_DIR = "reports/figures"
-
-class SimpleCNN(nn.Module):
-    """
-    Simple CNN model for binary classification of pneumonia images.
-    """
-    def __init__(self):
-        super(SimpleCNN, self).__init__()
-        # Input channels = 1, output channels = 32, kernel_size = 3
-        self.conv1 = nn.Conv2d(1, 32, kernel_size=3, padding=1)
-        self.pool = nn.MaxPool2d(2, 2)  # Reduces 28x28 -> 14x14
-        self.fc1 = nn.Linear(32 * 14 * 14, 128)
-        self.fc2 = nn.Linear(128, 1)
-        
-    def forward(self, x):
-        x = self.pool(torch.relu(self.conv1(x)))
-        x = x.view(x.size(0), -1)
-        x = torch.relu(self.fc1(x))
-        x = torch.sigmoid(self.fc2(x))
-        return x
 
 def ensure_dir_exists(directory):
     """Create directory if it doesn't exist"""
     if not os.path.exists(directory):
         os.makedirs(directory)
         print(f"Created directory: {directory}")
-
-def numpy_to_tensor(x):
-    """Convert numpy array to PyTorch tensor with correct shape for CNN"""
-    if x.ndim == 3:
-        # x is (N, H, W) - add channel dimension to get (N, 1, H, W)
-        x = np.expand_dims(x, axis=1)
-    elif x.ndim == 4 and x.shape[-1] == 1:
-        # x is (N, H, W, 1) - convert to (N, 1, H, W)
-        x = x.transpose(0, 3, 1, 2)
-    # Otherwise, assume it's already in the desired format
-    return torch.tensor(x, dtype=torch.float32)
-
-def load_data():
-    """Load and preprocess the PneumoniaMNIST dataset"""
-    print("Loading PneumoniaMNIST dataset...")
-    
-    # Load dataset information
-    dataset_info = INFO["pneumoniamnist"]
-    print(f"Dataset description: {dataset_info['description']}")
-    print(f"Number of classes: {len(dataset_info['label'])}, Labels: {dataset_info['label']}")
-    
-    # Load training and test sets
-    train_dataset = PneumoniaMNIST(split='train', download=True)
-    test_dataset = PneumoniaMNIST(split='test', download=True)
-    
-    print("Dataset loaded successfully.")
-    print(f"Training samples: {len(train_dataset)}")
-    print(f"Test samples: {len(test_dataset)}")
-    
-    # Preprocess images
-    x_train = train_dataset.imgs.astype('float32') / 255.0
-    y_train = train_dataset.labels.flatten()
-    
-    x_test = test_dataset.imgs.astype('float32') / 255.0
-    y_test = test_dataset.labels.flatten()
-    
-    # Flatten images for traditional models
-    x_train_flat = x_train.reshape(x_train.shape[0], -1)
-    x_test_flat = x_test.reshape(x_test.shape[0], -1)
-    
-    # Convert to tensor format for CNN
-    x_train_tensor = numpy_to_tensor(x_train)
-    x_test_tensor = numpy_to_tensor(x_test)
-    
-    # Split training data to create validation set for GA optimization
-    print("Creating validation split...")
-    (x_train_flat_model, x_val_flat, 
-     x_train_tensor_model, x_val_tensor, 
-     y_train_model, y_val) = train_test_split(
-        x_train_flat, x_train_tensor, y_train, test_size=0.2, random_state=42)
-    
-    print(f"Model training samples: {len(y_train_model)}")
-    print(f"Validation samples: {len(y_val)}")
-    
-    return (x_train_flat_model, x_val_flat, x_test_flat, 
-            x_train_tensor_model, x_val_tensor, x_test_tensor,
-            y_train_model, y_val, y_test)
-
-def train_decision_tree(x_train, y_train, max_depth=10):
-    """Train a Decision Tree model"""
-    print("\nTraining Decision Tree model...")
-    model = DecisionTreeClassifier(random_state=42, max_depth=max_depth)
-    model.fit(x_train, y_train)
-    return model
-
-def train_naive_bayes(x_train, y_train):
-    """Train a Gaussian Naive Bayes model"""
-    print("\nTraining Gaussian Naive Bayes model...")
-    model = GaussianNB()
-    model.fit(x_train, y_train)
-    return model
-
-def train_cnn(x_train, y_train, n_epochs=7, batch_size=32, learning_rate=0.001):
-    """Train a simple CNN model"""
-    print("\nTraining CNN model...")
-    
-    # Create model
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"Using device: {device}")
-    model = SimpleCNN().to(device)
-    
-    # Define loss and optimizer
-    criterion = nn.BCELoss()
-    optimizer = optim.Adam(model.parameters(), lr=learning_rate)
-    
-    # Create data loader
-    y_train_tensor = torch.tensor(y_train, dtype=torch.float32).unsqueeze(1)
-    train_dataset = TensorDataset(x_train, y_train_tensor)
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    
-    # Training loop
-    model.train()
-    for epoch in range(n_epochs):
-        epoch_loss = 0
-        for inputs, labels in train_loader:
-            inputs, labels = inputs.to(device), labels.to(device)
-            optimizer.zero_grad()
-            outputs = model(inputs)
-            loss = criterion(outputs, labels)
-            loss.backward()
-            optimizer.step()
-            epoch_loss += loss.item()
-        
-        print(f"Epoch {epoch+1}/{n_epochs}, Loss: {epoch_loss/len(train_loader):.4f}")
-    
-    return model, device
 
 def evaluate_model(model, x_test, y_test, model_name):
     """Evaluate model performance"""
@@ -261,15 +150,30 @@ def main():
     
     # Run genetic algorithm to find optimal ensemble weights
     print("\nOptimizing ensemble weights with genetic algorithm...")
-    ga = GeneticAlgorithm(pop_size=20, generations=30)
+    ga = GeneticAlgorithm(pop_size=20, generations=200)
     best_weights, best_fitness = ga.run_ga(
         [dt_val_probs, cnn_val_probs, bayes_val_probs],
         y_val
     )
+
+    print("\nSaving trained models...")
+    model_saver = ModelPersistence()
+    save_success = model_saver.save_models(
+        dt_model=dt_model,
+        bayes_model=bayes_model,
+        cnn_model=cnn_model,
+        ga_weights=best_weights
+    )
+    
+    if save_success:
+        print("All models saved successfully!")
+    else:
+        print("Warning: There was an issue saving one or more models.")
+
     
     print(f"\nOptimized Ensemble Weights: {[round(w, 3) for w in best_weights]}")
     print(f"Validation Fitness: {best_fitness:.4f}")
-    
+
     # Evaluate individual models on test set
     print("\nEvaluating models on test set...")
     
