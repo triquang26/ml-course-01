@@ -14,11 +14,11 @@ A matrix representation that shows how many instances were classified correctly 
 ## Results visualization
 # F1-Score Visualization
 The F1-score heatmap is used to assess the classification performance per class.
-The function plot_f1_heatmap(y_true, y_pred) plots a heatmap using seaborn.heatmap().
+The function plot_`f1_heatmap(y_true, y_pred)` plots a heatmap using `seaborn.heatmap()`.
 The heatmap shows the F1-score for each class, highlighting which classes the model performs well on and which need improvement.
 # Confusion Matrix Analysis
 The confusion matrix heatmap provides a visual representation of the model's predictions.
-The function plot_confusion_matrix(y_true, y_pred) uses seaborn.heatmap() to display counts of true vs. predicted labels.
+The function `plot_confusion_matrix(y_true, y_pred)` uses `seaborn.heatmap()` to display counts of true vs. predicted labels.
 This helps identify misclassification trends, such as:
 False Positives (FP): Predicting pneumonia when it’s normal.
 False Negatives (FN): Predicting normal when it’s pneumonia (a critical mistake).
@@ -48,34 +48,34 @@ Bayesian Model	        Moderate-High	    Low-Moderate	        High	        High	
 ## Time complexity analysis
 # Data Preprocessing
 Mean and Std Computation (compute_mean_std)
-Time Complexity:O(N)
+Time Complexity:`O(N)`
 Reason: The dataset is iterated once, and for each image, mean and standard deviation are computed.
 
-Flattening Images (X_train = np.array([img.numpy().flatten() for img, _ in train_dataset]))
-Time Complexity: O(N⋅D)
+Flattening Images `(X_train = np.array([img.numpy().flatten() for img, _ in train_dataset]))`
+Time Complexity: `O(N⋅D)`
 Reason: Each image (of size 𝐷) is flattened, requiring O(D) operations per image.
 
 Train-Test Split (train_test_split)
-Time Complexity: O(N)
+Time Complexity: `O(N)`
 Reason: The function randomly shuffles and splits the dataset once.
 # Decision Tree Training 
 Time Complexity:
-Best Case (Balanced Tree): O(NlogN)
-Worst Case (Unbalanced Tree): O(N^2)
+Best Case (Balanced Tree): `O(NlogN)`
+Worst Case (Unbalanced Tree): `O(N^2)`
 Reason: Training a Decision Tree involves sorting and recursively splitting the dataset.
 # Inference & Prediction (dt_model.predict)
 Time Complexity
-Best Case: O(logN) (Balanced tree)
-Worst Case: O(N) (Unbalanced tree)
+Best Case: `O(logN)` (Balanced tree)
+Worst Case: `O(N)` (Unbalanced tree)
 
 Reason: Prediction involves traversing the tree, which has a depth of at most O(logN) for a balanced tree.
 # Evaluation Metrics Computation
 F1-Score
-Time Complexity: O(N)
+Time Complexity: `O(N)`
 Reason: The function iterates through all predictions to compute precision and recall.
 
 Confusion Matrix 
-Time Complexity: O(N)
+Time Complexity: `O(N)`
 Reason: Each prediction is compared to the ground truth label.
 
 ## Space complexity
@@ -85,11 +85,11 @@ Space Complexity: O(ND)
 Reason: Stores N images, each with D pixels.
 
 Flattened Feature Matrix (X_train, X_test)
-Space Complexity: O(ND)
+Space Complexity: `O(ND)`
 Reason: Each image is stored as a 1D array of size D.
 
 Labels 
-Space Complexity: O(N)
+Space Complexity: `O(N)`
 Reason: One integer per sample.
 # Decision Tree Model
 Space Complexity:
@@ -97,8 +97,8 @@ Best Case (Balanced Tree): O(N)
 Worst Case (Unbalanced Tree): O(N)
 Reason: The tree stores N samples and corresponding splits.
 # Confusion Matrix and F1-Score
-Space Complexity: O(C^2) where C is the number of classes
-Reason: The confusion matrix is a C×C matrix, and F1-score stores one value per class.
+Space Complexity: `O(C^2)` where `C` is the number of classes
+Reason: The confusion matrix is a `C×C` matrix, and F1-score stores one value per class.
 
 ## Resource Usage
 # CPU Usage
@@ -130,14 +130,14 @@ max_depth (int): The maximum depth of the tree (to prevent overfitting).
 random_state (int): Ensures reproducibility.
 
 Methods:
-fit(X_train, y_train): Trains the model.
-predict(X_test): Makes predictions on new data.
+`fit(X_train, y_train)`: Trains the model.
+`predict(X_test`): Makes predictions on new data.
 # f1_score(y_true, y_pred, average=None)
 Description: Computes the F1-score for each class.
 
 Parameters:
-y_true (array): True labels.
-y_pred (array): Predicted labels.
+`y_true` (array): True labels.
+`y_pred` (array): Predicted labels.
 average (str): "None" returns F1-score for each class separately.
 
 Returns:
@@ -146,8 +146,8 @@ numpy array: F1-score per class.
 Description: Computes the confusion matrix for model evaluation.
 
 Parameters:
-y_true (array): True labels.
-y_pred (array): Predicted labels.
+`y_true` (array): True labels.
+`y_pred` (array): Predicted labels.
 
 Returns:
 2D numpy array: Confusion matrix.
