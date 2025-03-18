@@ -38,7 +38,7 @@ Imbalance Issues: If "Normal" cases dominate, the model may favor them.
 Possible Fix: Resampling or using F1-score instead of accuracy for evaluation.
 
 # Performance comparision
-### We have the visualization about the model comparision
+### We have image to illustrate performance comparison between models
 ![Model Comparision](../../../figures/model-comparison.png)
 
 # Code efficiency
