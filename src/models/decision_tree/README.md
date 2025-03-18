@@ -3,7 +3,7 @@
 The decision tree model is evaluated using the standard classification metrics
 # Accuracy Score
 Measures the percentage of correctly predicted labels over the total test samples.
-Accuracy = Correct Predictions / Total samples
+`Accuracy = Correct Predictions / Total samples`
 # Classification Report
 Precision : True Positive / (True Positive + False Positive)
 Recall : True Positive / (True Positive + False Negative)
@@ -68,7 +68,7 @@ Time Complexity
 Best Case: `O(logN)` (Balanced tree)
 Worst Case: `O(N)` (Unbalanced tree)
 
-Reason: Prediction involves traversing the tree, which has a depth of at most O(logN) for a balanced tree.
+Reason: Prediction involves traversing the tree, which has a depth of at most `O(logN)` for a balanced tree.
 # Evaluation Metrics Computation
 F1-Score
 Time Complexity: `O(N)`
@@ -81,10 +81,10 @@ Reason: Each prediction is compared to the ground truth label.
 ## Space complexity
 # Data Storage
 Original Image Data (train_dataset, test_dataset)
-Space Complexity: O(ND)
+Space Complexity: `O(ND)`
 Reason: Stores N images, each with D pixels.
 
-Flattened Feature Matrix (X_train, X_test)
+Flattened Feature Matrix `(X_train, X_test)`
 Space Complexity: `O(ND)`
 Reason: Each image is stored as a 1D array of size D.
 
@@ -93,8 +93,8 @@ Space Complexity: `O(N)`
 Reason: One integer per sample.
 # Decision Tree Model
 Space Complexity:
-Best Case (Balanced Tree): O(N)
-Worst Case (Unbalanced Tree): O(N)
+Best Case (Balanced Tree): `O(N)`
+Worst Case (Unbalanced Tree): `O(N)`
 Reason: The tree stores N samples and corresponding splits.
 # Confusion Matrix and F1-Score
 Space Complexity: `O(C^2)` where `C` is the number of classes
@@ -116,22 +116,22 @@ Loading the dataset from MedMNIST requires downloading and storing images on dis
 Description: Computes the mean and standard deviation of the dataset for normalization.
 
 Parameters:
-dataset (torch.utils.data.Dataset): The dataset containing images.
+dataset (`torch.utils.data.Dataset`): The dataset containing images.
 
 Returns:
-mean (float): Mean pixel intensity.
-std (float): Standard deviation of pixel intensity.
+`mean (float)`: Mean pixel intensity.
+`std (float)`: Standard deviation of pixel intensity.
 # DecisionTreeClassifier(criterion='gini', max_depth=10, random_state=42')
 Description: Trains a Decision Tree classifier on the dataset.
 
 Parameters:
-criterion (str): "gini" or "entropy", specifies the split criterion.
-max_depth (int): The maximum depth of the tree (to prevent overfitting).
+`criterion (str)`: "gini" or "entropy", specifies the split criterion.
+`max_depth (int)`: The maximum depth of the tree (to prevent overfitting).
 random_state (int): Ensures reproducibility.
 
 Methods:
 `fit(X_train, y_train)`: Trains the model.
-`predict(X_test`): Makes predictions on new data.
+`predict(X_test)`: Makes predictions on new data.
 # f1_score(y_true, y_pred, average=None)
 Description: Computes the F1-score for each class.
 
@@ -142,7 +142,7 @@ average (str): "None" returns F1-score for each class separately.
 
 Returns:
 numpy array: F1-score per class.
-# confusion_matrix(y_true, y_pred)
+# confusion_matrix(`y_true`, `y_pred`)
 Description: Computes the confusion matrix for model evaluation.
 
 Parameters:
