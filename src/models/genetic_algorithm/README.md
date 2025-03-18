@@ -76,10 +76,10 @@ The Genetic Algorithm optimization yielded the following key results:
 
 | Model | Confusion Matrix |
 |-------|------------------|
-| **Decision Tree** | ![Decision Tree CM](../../../reports/figures/20250311-214302_decision_tree_cm.png) |
-| **Naive Bayes** | ![Naive Bayes CM](../../../reports/figures/20250311-214302_naive_bayes_cm.png) |
-| **CNN** | ![CNN CM](../../../reports/figures/20250311-214302_cnn_cm.png) |
-| **GA Ensemble** | ![GA Ensemble CM](../../../reports/figures/20250311-214302_ga_ensemble_cm.png) |
+| **Decision Tree** | ![Decision Tree CM](reports/figures/20250311-214302_decision_tree_cm.png) |
+| **Naive Bayes** | ![Naive Bayes CM](reports/figures/20250311-214302_naive_bayes_cm.png) |
+| **CNN** | ![CNN CM](reports/figures/20250311-214302_cnn_cm.png) |
+| **GA Ensemble** | ![GA Ensemble CM](reports/figures/20250311-214302_ga_ensemble_cm.png) |
 *Figure 2: Confusion matices across all models*
 
 Based on the two figures above, we can see that:
