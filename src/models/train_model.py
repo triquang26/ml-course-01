@@ -38,14 +38,14 @@ DECISION_TREE_MAIN = os.path.join(os.path.dirname(__file__), 'decision_tree', 'm
 GENETIC_ALGORITHM_MAIN = os.path.join(os.path.dirname(__file__), 'genetic_algorithm', 'main.py')
 GRAPHICAL_MODEL_MAIN = os.path.join(os.path.dirname(__file__), 'graphical_model', 'main.py')
 NEURAL_NETWORK_MAIN = os.path.join(os.path.dirname(__file__), 'neural_network', 'main.py')
-
+BAGGING_BOOSTING_MAIN = os.path.join(os.path.dirname(__file__), 'bagging_boosting', 'main.py')
 # Import main functions dynamically
 bayesian_main = import_main_from_path(BAYESIAN_MAIN)
 decision_tree_main = import_main_from_path(DECISION_TREE_MAIN)
 genetic_algorithm_main = import_main_from_path(GENETIC_ALGORITHM_MAIN)
 graphical_model_main = import_main_from_path(GRAPHICAL_MODEL_MAIN)
 neural_network_main = import_main_from_path(NEURAL_NETWORK_MAIN)
-
+bagging_boosting_main = import_main_from_path(BAGGING_BOOSTING_MAIN)
 def run_model_safely(model_name, model_func):
     """Run a model function with proper error handling"""
     if model_func is None:
@@ -111,10 +111,16 @@ def train_all_models():
     if run_model_safely("neural_network", neural_network_main):
         successful_models += 1
     
+    # Train Bagging and Boosting models
+    print("\n" + "="*80)
+    print("RUNNING BAGGING AND BOOSTING MODELS")
+    print("="*80)
+    if run_model_safely("bagging_boosting", bagging_boosting_main):
+        successful_models += 1
     # Print execution time
     execution_time = time.time() - start_time
     print("\n" + "="*80)
-    print(f"TRAINING COMPLETE: {successful_models} of 5 models trained successfully")
+    print(f"TRAINING COMPLETE: {successful_models} of 6 models trained successfully")
     print(f"Total execution time: {execution_time:.2f} seconds ({execution_time/60:.2f} minutes)")
     print("="*80)
 
@@ -170,7 +176,13 @@ def train_selected_models(models):
         print("="*80)
         if run_model_safely("neural_network", neural_network_main):
             successful_models += 1
-    
+
+    if "bagging_boosting" in models:
+        print("\n" + "="*80)
+        print("RUNNING BAGGING AND BOOSTING MODELS")
+        print("="*80)
+        if run_model_safely("bagging_boosting", bagging_boosting_main):
+            successful_models += 1
     # Print execution time
     execution_time = time.time() - start_time
     print("\n" + "="*80)
@@ -182,7 +194,7 @@ def train_selected_models(models):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Train machine learning models for PneumoniaMNIST classification")
     parser.add_argument("--models", type=str, nargs="+", 
-                        choices=["bayesian", "decision_tree", "genetic_algorithm", "graphical_model", "neural_network", "all"],
+                        choices=["bayesian", "decision_tree", "genetic_algorithm", "graphical_model", "neural_network", "bagging_boosting", "all"],
                         default=["all"], 
                         help="Specify which models to train ('all' to train all models)")
     
