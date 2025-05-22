@@ -35,10 +35,8 @@ class AdaBoostClassifier:
 
             alpha = self.learning_rate * 0.5 * math.log((1 - err) / err)
             print(f"[AdaBoost] error={err:.4f} → alpha={alpha:.4f}")
-            
             self.estimators_.append(estimator)
             self.estimator_weights_.append(alpha)
-            
             # update and renormalize weights
             w *= np.exp(alpha * miss)
             w /= np.sum(w)

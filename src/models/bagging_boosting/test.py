@@ -1,5 +1,6 @@
 import os
 import sys
+import numpy as np
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 import matplotlib.pyplot as plt
 
@@ -35,7 +36,9 @@ def visualize_confusion_matrix(y_true, y_pred, model_type, save_path=None):
     plt.xlabel('Predicted Label')
     for i in range(cm.shape[0]):
         for j in range(cm.shape[1]):
-            plt.text(j, i, str(cm[i,j]), ha='center', va='center', color='white' if cm[i,j]>cm.max()/2 else 'black')
+            plt.text(j, i, str(cm[i,j]),
+                     ha='center', va='center',
+                     color='white' if cm[i,j] > cm.max()/2 else 'black')
     plt.tight_layout()
     if save_path:
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
@@ -57,7 +60,9 @@ def test_models():
         'bagging_dt',
         'adaboost_dt',
         'bagging_scratch',
-        'boosting_scratch',
+        'adaboost_scratch',
+        'sk_gb',         
+        'gb_scratch',    
     ]
 
     results = {}

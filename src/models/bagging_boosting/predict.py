@@ -3,7 +3,6 @@ import sys
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 
-# make sure project root is on the path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 from src.data.preprocess.bagging_boosting import load_data

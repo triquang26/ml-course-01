@@ -38,6 +38,5 @@ class BaggingClassifier:
         all_preds = np.array([est.predict(X) for est in self.estimators_])  # (n_estimators, n_samples)
         maj_vote = []
         for preds in all_preds.T:
-            # Counter.most_common(1)[0][0] gives the top-voted label
             maj_vote.append(Counter(preds).most_common(1)[0][0])
         return np.array(maj_vote)

@@ -6,16 +6,16 @@ from sklearn.ensemble import BaggingClassifier, AdaBoostClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
 
-# ensure project root is on the path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
 
 from persistence import ModelPersistence
 from src.data.preprocess.bagging_boosting import load_data, ensure_dir_exists
 from src.visualization.visualize import visualize_results, VISUALIZATION_DIR
 
-# your from-scratch implementations
 from src.models.bagging_boosting.core.bagging import BaggingClassifier as ScratchBagging
-from src.models.bagging_boosting.core.boosting import AdaBoostClassifier as ScratchAdaBoost
+from src.models.bagging_boosting.core.adaboosting import AdaBoostClassifier as ScratchAdaBoost
+from sklearn.ensemble import GradientBoostingClassifier as SKGB
+from src.models.bagging_boosting.core.gradient_boosting import GradientBoostingClassifier as ScratchGB
 
 def main():
     ensure_dir_exists(VISUALIZATION_DIR)
@@ -83,8 +83,27 @@ def main():
             VISUALIZATION_DIR, f"{timestamp}_adaboost_dt_cm.png"
         )
     )
+    # 4) scikit-learn GradientBoosting
+    sk_gb = SKGB(
+        n_estimators=50,
+        learning_rate=0.1,
+        max_depth=3,
+        random_state=42
+    )
+    sk_gb.fit(X_train, y_train)
+    y_pred_sk_gb = sk_gb.predict(X_test)
+    acc_sk_gb = accuracy_score(y_test, y_pred_sk_gb)
+    results['SK GradBoost'] = acc_sk_gb
+    persistence.save_model(
+        sk_gb, 'sk_gb', f"sk_gb_{timestamp}.joblib"
+    )
+    visualize_results(
+        y_pred_sk_gb, y_test,
+        'SK GradBoost',
+        save_path=os.path.join(VISUALIZATION_DIR, f"{timestamp}_sk_gb_cm.png"),
+    )
 
-    # 4) From-scratch Bagging
+    # 5) From-scratch Bagging
     scratch_bag = ScratchBagging(
         base_estimator=DecisionTreeClassifier(max_depth=5),
         n_estimators=50,
@@ -105,11 +124,10 @@ def main():
         )
     )
 
-    # 5) From-scratch AdaBoost
+    # 6) From-scratch AdaBoost
     scratch_boost = ScratchAdaBoost(
         base_estimator=DecisionTreeClassifier(max_depth=1),
         n_estimators=50,
-        learning_rate=0.5,
         random_state=42
     )
     scratch_boost.fit(X_train, y_train)
@@ -117,14 +135,35 @@ def main():
     acc = accuracy_score(y_test, y_pred)
     results['Scratch AdaBoost'] = acc
     persistence.save_model(
-        scratch_boost, 'boosting_scratch', f"boosting_scratch_{timestamp}.joblib"
+        scratch_boost, 'adaboost_scratch', f"adaboost_scratch_{timestamp}.joblib"
     )
     visualize_results(
         y_pred, y_test,
         'Scratch AdaBoost',
         save_path=os.path.join(
-            VISUALIZATION_DIR, f"{timestamp}_boosting_scratch_cm.png"
+            VISUALIZATION_DIR, f"{timestamp}_adaboost_scratch_cm.png"
         )
+    )
+
+    # 7) Scratch GradientBoosting
+    scratch_gb = ScratchGB(
+        n_estimators=50,
+        learning_rate=0.1,
+        max_depth=3,
+        subsample=1.0,
+        random_state=42,
+    )
+    scratch_gb.fit(X_train, y_train)
+    y_pred_scratch_gb = scratch_gb.predict(X_test)
+    acc_scratch_gb = accuracy_score(y_test, y_pred_scratch_gb)
+    results['Scratch GradBoost'] = acc_scratch_gb
+    persistence.save_model(
+        scratch_gb, 'gb_scratch', f"gb_scratch_{timestamp}.joblib"
+    )
+    visualize_results(
+        y_pred_scratch_gb, y_test,
+        'Scratch GradBoost',
+        save_path=os.path.join(VISUALIZATION_DIR, f"{timestamp}_gb_scratch_cm.png"),
     )
 
     # Summary
