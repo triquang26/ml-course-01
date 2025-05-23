@@ -32,7 +32,6 @@ def main():
     
     # Verify loading
     loaded_model = load_model(model_path)
-    print("Successfully loaded the model")
     
     # Visualize results
     visualize_confusion_matrix(

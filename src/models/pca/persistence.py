@@ -54,3 +54,4 @@ def get_latest_model(model_dir=MODEL_DIR):
         raise FileNotFoundError("No saved models found")
     latest_model = max(model_files, key=lambda x: os.path.getctime(os.path.join(model_dir, x)))
     return load_model(os.path.join(model_dir, latest_model))
+
