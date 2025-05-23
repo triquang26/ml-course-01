@@ -9,8 +9,8 @@
 | **Phạm Trí Quang**    | 2352976        | [quang.phamtri@hcmut.edu.vn](mailto:quang.phamtri@hcmut.edu.vn) | Graphical Model,SVM       |
 | **Nguyễn Thiện Anh**  | 2352053        | [anh.nguyencse2350253@hcmut.edu.vn](mailto:anh.nguyencse2350253@hcmut.edu.vn) | Genetic Algorithm, CRF     |
 | **Lê Nhân Văn**       | 2252899        | [van.lenhanvan369@hcmut.edu.vn](mailto:van.lenhanvan369@hcmut.edu.vn) | Decision Tree, PCA         |
-| **Nguyễn Anh Kiệt**   | 2252403        | [kiet.nguyenanh@hcmut.edu.vn](mailto:kiet.nguyenanh@hcmut.edu.vn) | Bayesian Models,       |
-| **Nguyễn Hữu Cường** | 2252098        | [cuong.nguyen1nos1mp4@hcmut.edu.vn](mailto:cuong.nguyen1nos1mp4@hcmut.edu.vn) | Neural Network        |
+| **Nguyễn Anh Kiệt**   | 2252403        | [kiet.nguyenanh@hcmut.edu.vn](mailto:kiet.nguyenanh@hcmut.edu.vn) | Bayesian Models, Boosting       |
+| **Nguyễn Hữu Cường** | 2252098        | [cuong.nguyen1nos1mp4@hcmut.edu.vn](mailto:cuong.nguyen1nos1mp4@hcmut.edu.vn) | Neural Network, Garphical Model        |
 
 ## Repository Link
 You can access the repository [here](https://github.com/triquang26/ml-course-01).
