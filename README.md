@@ -1,4 +1,4 @@
-# MACHINE LEARNING ASSIGNMENT 1
+# MACHINE LEARNING ASSIGNMENT
 
 ## Ho Chi Minh City University of Technology
 ### Faculty of Computer Science and Engineering
@@ -6,10 +6,10 @@
 ## Team Members:
 | **Name**              | **Student ID** | **Email**                                                      | **Role**              |
 |-----------------------|----------------|----------------------------------------------------------------|-----------------------|
-| **Phạm Trí Quang**    | 2352976        | [quang.phamtri@hcmut.edu.vn](mailto:quang.phamtri@hcmut.edu.vn) | Graphical Model       |
-| **Nguyễn Thiện Anh**  | 2352053        | [anh.nguyencse2350253@hcmut.edu.vn](mailto:anh.nguyencse2350253@hcmut.edu.vn) | Genetic Algorithm     |
-| **Lê Nhân Văn**       | 2252899        | [van.lenhanvan369@hcmut.edu.vn](mailto:van.lenhanvan369@hcmut.edu.vn) | Decision Tree         |
-| **Nguyễn Anh Kiệt**   | 2252403        | [kiet.nguyenanh@hcmut.edu.vn](mailto:kiet.nguyenanh@hcmut.edu.vn) | Bayesian Models       |
+| **Phạm Trí Quang**    | 2352976        | [quang.phamtri@hcmut.edu.vn](mailto:quang.phamtri@hcmut.edu.vn) | Graphical Model,SVM       |
+| **Nguyễn Thiện Anh**  | 2352053        | [anh.nguyencse2350253@hcmut.edu.vn](mailto:anh.nguyencse2350253@hcmut.edu.vn) | Genetic Algorithm, CRF     |
+| **Lê Nhân Văn**       | 2252899        | [van.lenhanvan369@hcmut.edu.vn](mailto:van.lenhanvan369@hcmut.edu.vn) | Decision Tree, PCA         |
+| **Nguyễn Anh Kiệt**   | 2252403        | [kiet.nguyenanh@hcmut.edu.vn](mailto:kiet.nguyenanh@hcmut.edu.vn) | Bayesian Models,       |
 | **Nguyễn Hữu Cường** | 2252098        | [cuong.nguyen1nos1mp4@hcmut.edu.vn](mailto:cuong.nguyen1nos1mp4@hcmut.edu.vn) | Neural Network        |
 
 ## Repository Link
@@ -22,8 +22,13 @@ This project implements and compares the following machine learning models:
 - **Bayesian Models** (Gaussian NB, Multinomial NB, Bernoulli NB)
 - **Decision Trees**
 - **Neural Networks** (Vision Transformer)
-- **Graphical Models** (Bayesian Networks, Augmented Naive Bayes, Hidden Markov Models)
+- **Graphical Models** (Bayesian Networks, Augmented Naive Bayes, Hidden Markov Models, Conditional Random Fields (CRF))
 - **Genetic Algorithm-based Ensemble Model** (Convolutional Neural Network, Decision Tree, Naive Bayes)
+- **Support Vector Machines (SVM)** (Linear and RBF kernels)
+- **Principal Component Analysis (PCA)** (for dimensionality reduction)
+- **Boosting Methods** (AdaBoost, Gradient Boosting, Bagging)
+
+All models are trained and evaluated on the **PneumoniaMNIST** dataset, a binary classification task to identify pneumonia in pediatric chest X-rays.
 
 All models are trained and evaluated on the **PneumoniaMNIST** dataset, a binary classification task to identify pneumonia in pediatric chest X-rays.
 
@@ -176,14 +181,29 @@ Each model is structured consistently across the repository:
 - **Strengths**: Strong feature extraction capabilities for complex patterns
 
 ### 4. Graphical Models
-- **Implementation**: Bayesian Networks, Augmented Naive Bayes, Hidden Markov Models
-- **Key Features**: Structured probabilistic relationships
-- **Strengths**: Captures complex conditional dependencies
+- **Implementation**: Bayesian Networks, Augmented Naive Bayes, Hidden Markov Models, Conditional Random Fields (CRF)
+- **Key Features**: Structured probabilistic relationships, sequence modeling (CRF)
+- **Strengths**: Captures complex conditional dependencies, effective for structured prediction
 
 ### 5. Genetic Algorithm Ensemble
 - **Implementation**: Weighted ensemble combining Decision Tree, CNN, and Naive Bayes
 - **Key Features**: Optimization of model weights using genetic algorithm
 - **Strengths**: Automated model combination optimization
+
+### 6. Support Vector Machines (SVM)
+- **Implementation**: SVM with linear and RBF kernels
+- **Key Features**: Maximum margin classification
+- **Strengths**: Effective in high-dimensional spaces, robust to overfitting
+
+### 7. Principal Component Analysis (PCA)
+- **Implementation**: Dimensionality reduction for feature preprocessing
+- **Key Features**: Orthogonal transformation to reduce feature space
+- **Strengths**: Improves model efficiency, reduces noise
+
+### 8. Boosting Methods
+- **Implementation**: AdaBoost, Gradient Boosting, Bagging
+- **Key Features**: Ensemble methods with iterative weak learner improvement (AdaBoost, Gradient Boosting) and parallel weak learners (Bagging)
+- **Strengths**: High predictive power, reduces variance and bias
 
 ## Dataset
 
@@ -194,7 +214,7 @@ The **PneumoniaMNIST** dataset consists of **5,856** pediatric chest X-ray image
 
 ## Performance Comparison
 ![Model Performance Comparison](/figures/model-comparison.png)
-
+![Model Performance Comparison](/figures/model-comparison-2.png)
 ## Getting Started
 
 ### Prerequisites
